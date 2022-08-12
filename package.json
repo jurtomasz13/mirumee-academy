@@ -1,4 +1,5 @@
 {
+  "homepage": "https://jurtomasz13.github.io/mirumee-academy/",
   "name": "frontend-academy",
   "version": "0.1.0",
   "private": true,
@@ -11,6 +12,7 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@types/stylelint": "^14.0.0",
+    "gh-pages": "^4.0.0",
     "graphql": "^16.5.0",
     "graphql-request": "^4.3.0",
     "i": "^0.3.7",
@@ -23,6 +25,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
