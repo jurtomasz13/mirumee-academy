@@ -21,3 +21,9 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# configs
+/.vscode
+.eslintrc.json
+.prettierrc
+.stylelintrc.json
