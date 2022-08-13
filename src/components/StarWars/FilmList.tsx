@@ -17,7 +17,7 @@ const FilmList: React.FunctionComponent<{
   films: Film[];
   isFetching: boolean;
 }> = ({ films, isFetching }) => {
-  const data = films?.map((film) => (
+  const filmItems = films?.map((film) => (
     <FilmItem
       key={film?.id}
       title={film.title}
@@ -31,7 +31,7 @@ const FilmList: React.FunctionComponent<{
       {isFetching ? (
         <Img src={Loader} alt="logo" style={{ margin: "20px auto" }} />
       ) : (
-        data
+        filmItems
       )}
     </ParentList>
   );

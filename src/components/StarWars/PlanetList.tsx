@@ -23,7 +23,7 @@ const PlanetList: React.FunctionComponent<{
   });
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const planetsItems = data.planets?.map((planet) => (
+  const planetItems = data.planets?.map((planet) => (
     <PlanetItem key={planet?.id} {...planet} />
   ));
 
@@ -142,7 +142,7 @@ const PlanetList: React.FunctionComponent<{
         </Paragraph>
         <Line />
       </ChildListElement>
-      {planetsItems}
+      {planetItems}
     </ChildList>
   );
 };
