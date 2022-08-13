@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import Loader from "../../assets/gifs/loading.gif";
 import Logo from "../../assets/images/logo.png";
 import { ParentList } from "../../styles";
 import { Film } from "../../types";
@@ -14,7 +15,8 @@ const Img = styled.img`
 
 const FilmList: React.FunctionComponent<{
   films: Film[];
-}> = ({ films }) => {
+  isFetching: boolean;
+}> = ({ films, isFetching }) => {
   const data = films?.map((film) => (
     <FilmItem
       key={film?.id}
@@ -26,7 +28,11 @@ const FilmList: React.FunctionComponent<{
   return (
     <ParentList>
       <Img src={Logo} alt="logo" />
-      {data}
+      {isFetching ? (
+        <Img src={Loader} alt="logo" style={{ margin: "20px auto" }} />
+      ) : (
+        data
+      )}
     </ParentList>
   );
 };

@@ -1,9 +1,9 @@
 import React from "react";
 
-import Accordion from "./components/Accordion/Accordion";
+import StarWars from "./components/StarWars/StarWars";
 
 const App: React.FunctionComponent = () => {
-  return <Accordion />;
+  return <StarWars />;
 };
 
 export default App;

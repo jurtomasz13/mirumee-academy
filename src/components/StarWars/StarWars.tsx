@@ -5,15 +5,14 @@ import React from "react";
 import { client } from "../../graphql/client";
 import FilmList from "./FilmList";
 
-const Accordion: React.FunctionComponent = () => {
+export const StarWars: React.FunctionComponent = () => {
   const { data, error, isError, isFetching } = usePlanets();
 
   return (
     <>
-      <FilmList films={data} />
+      <FilmList films={data} isFetching={isFetching} />
       {/* @ts-ignore */}
       {isError && `Error: ${(<span>{error.message}</span>)}`}
-      {isFetching && "Fetching..."}
     </>
   );
 };
@@ -48,4 +47,4 @@ function usePlanets() {
   });
 }
 
-export default Accordion;
+export default StarWars;
