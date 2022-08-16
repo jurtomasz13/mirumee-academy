@@ -9,7 +9,6 @@ import SortUp from "../../assets/icons/sortUp.svg";
 const Span = styled.span`
   display: flex;
   flex-direction: column;
-  align-self: center;
   margin: 0 0 0 10px;
   transform: scale(1.25);
 `;

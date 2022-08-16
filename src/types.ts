@@ -1,4 +1,5 @@
 export type Planet = {
+  __typename: string;
   id: string;
   name: string;
   rotationPeriod: number;
