@@ -1,149 +1,84 @@
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
 
-import { ChildList, ChildListElement, Paragraph, Span } from "../../styles";
 import { Planet } from "../../types";
 import PlanetItem from "./PlanetItem";
 import SortIcon from "./SortIcon";
+import {
+  PlanetHeader,
+  PlanetHeaders,
+  PlanetList as List,
+  Line,
+} from "./styles";
+import { getItemsFromKeys, sortHandler } from "./utils";
 
-const Line = styled.hr`
-  width: 95%;
-  border: 1px solid #c4c4c4;
-  margin: 5px auto 0;
-`;
+export type PlanetDataObject = {
+  planets: Planet[];
+  sortedBy: string;
+  ascending: boolean | null;
+};
 
 const PlanetList: React.FunctionComponent<{
   planets: Planet[];
   active: boolean;
 }> = ({ planets, active }) => {
-  const [data, setData] = useState({
+  const [data, setData] = useState<PlanetDataObject>({
     planets,
     sortedBy: "none",
     ascending: null,
   });
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
+  const planetKeys: Array<keyof Planet> = Object.keys(planets[0]) as Array<
+    keyof Planet
+  >;
+
   const planetItems = data.planets?.map((planet) => (
-    <PlanetItem key={planet?.id} {...planet} />
+    <PlanetItem key={planet?.id} planetKeys={planetKeys} planet={planet} />
   ));
+
+  const planetHeaders = getItemsFromKeys(
+    planets[0].__typename,
+    planetKeys,
+    ["__typename", "id"],
+    "name",
+    (key, keyName) => (
+      <PlanetHeader
+        key={key}
+        onClick={() => {
+          setData(sortHandler(key, data));
+        }}
+      >
+        {keyName}
+        <SortIcon
+          sortedBy={key}
+          order={data.sortedBy}
+          ascending={!!data.ascending}
+        />
+      </PlanetHeader>
+    )
+  );
 
   const childListRef = useRef<HTMLLIElement>();
 
-  const sortHandler = (type: keyof Planet) => {
-    const CONDITION =
-      data.sortedBy === type &&
-      !!(data.ascending === false || data.ascending === null);
-
-    const sortedData = [...data.planets].sort((a, b) => {
-      if (type === "climates") {
-        const stringA = a?.climates?.join("");
-        const stringB = b?.climates?.join("");
-
-        if (CONDITION) {
-          if (stringA > stringB) return -1;
-          if (stringA < stringB) return 1;
-        } else {
-          if (stringA > stringB) return 1;
-          if (stringA < stringB) return -1;
-        }
-        return 0;
-      }
-
-      if (CONDITION) {
-        if (a[type] > b[type]) return -1;
-        if (a[type] < b[type]) return 1;
-      } else {
-        if (a[type] > b[type]) return 1;
-        if (a[type] < b[type]) return -1;
-      }
-      return 0;
-    });
-
-    const dataObject: any = {
-      planets: sortedData,
-      sortedBy: type,
-      ascending: CONDITION,
-    };
-
-    setData(dataObject);
-  };
-
   useEffect(() => {
-    console.log(windowWidth + "px");
+    console.log(windowWidth);
     window.addEventListener("resize", () => {
       setWindowWidth(window.innerWidth);
     });
   }, []);
 
   return (
-    <ChildList
+    <List
       active={active}
       ref={childListRef}
       scrollHeight={childListRef.current?.scrollHeight}
+      // isResizing={isResizing}
     >
-      <ChildListElement hidden>
-        <Paragraph>
-          <Span onClick={() => sortHandler("name")}>
-            Planet Name
-            <SortIcon
-              sortedBy="name"
-              order={data.sortedBy}
-              ascending={!!data.ascending}
-            />
-          </Span>
-          <Span onClick={() => sortHandler("rotationPeriod")}>
-            Rotation Period
-            <SortIcon
-              sortedBy="rotationPeriod"
-              order={data.sortedBy}
-              ascending={!!data.ascending}
-            />
-          </Span>
-          <Span onClick={() => sortHandler("orbitalPeriod")}>
-            Orbital Period
-            <SortIcon
-              sortedBy="orbitalPeriod"
-              order={data.sortedBy}
-              ascending={!!data.ascending}
-            />
-          </Span>
-          <Span onClick={() => sortHandler("diameter")}>
-            Diameter
-            <SortIcon
-              sortedBy="diameter"
-              order={data.sortedBy}
-              ascending={!!data.ascending}
-            />
-          </Span>
-          <Span onClick={() => sortHandler("climates")}>
-            Climate
-            <SortIcon
-              sortedBy="climates"
-              order={data.sortedBy}
-              ascending={!!data.ascending}
-            />
-          </Span>
-          <Span onClick={() => sortHandler("surfaceWater")}>
-            Surface Water
-            <SortIcon
-              sortedBy="surfaceWater"
-              order={data.sortedBy}
-              ascending={!!data.ascending}
-            />
-          </Span>
-          <Span onClick={() => sortHandler("population")}>
-            Population
-            <SortIcon
-              sortedBy="population"
-              order={data.sortedBy}
-              ascending={!!data.ascending}
-            />
-          </Span>
-        </Paragraph>
-        <Line />
-      </ChildListElement>
+      <PlanetHeaders hidden>{planetHeaders}</PlanetHeaders>
+      <Line />
       {planetItems}
-    </ChildList>
+    </List>
   );
 };
 
