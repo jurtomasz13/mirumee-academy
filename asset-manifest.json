@@ -1,22 +1,21 @@
 {
   "files": {
     "main.css": "/mirumee-academy/static/css/main.7cd205b1.css",
-    "main.js": "/mirumee-academy/static/js/main.aad44268.js",
+    "main.js": "/mirumee-academy/static/js/main.e1ba8b1d.js",
     "static/js/787.0bce6f49.chunk.js": "/mirumee-academy/static/js/787.0bce6f49.chunk.js",
     "static/media/loading.gif": "/mirumee-academy/static/media/loading.317c2e4df1ff48e2f41b.gif",
     "index.html": "/mirumee-academy/index.html",
-    "static/media/sortActiveUp.svg": "/mirumee-academy/static/media/sortActiveUp.682b7a49be420e376ca87205d3ac7669.svg",
     "static/media/collapse.svg": "/mirumee-academy/static/media/collapse.91eb6ac9ea38305bb3fd1dfdc666a0c9.svg",
     "static/media/expand.svg": "/mirumee-academy/static/media/expand.872a91f4256de7d0a8e4737dd8da676d.svg",
     "static/media/sortActiveDown.svg": "/mirumee-academy/static/media/sortActiveDown.818dfd986e2be9b11b198fa55af46aa1.svg",
     "static/media/sortDown.svg": "/mirumee-academy/static/media/sortDown.e8ae34656cee90361f4c5431f7c3e419.svg",
     "static/media/sortUp.svg": "/mirumee-academy/static/media/sortUp.7d423f0eeaa0206d3ef0f0d56e1df430.svg",
     "main.7cd205b1.css.map": "/mirumee-academy/static/css/main.7cd205b1.css.map",
-    "main.aad44268.js.map": "/mirumee-academy/static/js/main.aad44268.js.map",
+    "main.e1ba8b1d.js.map": "/mirumee-academy/static/js/main.e1ba8b1d.js.map",
     "787.0bce6f49.chunk.js.map": "/mirumee-academy/static/js/787.0bce6f49.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7cd205b1.css",
-    "static/js/main.aad44268.js"
+    "static/js/main.e1ba8b1d.js"
   ]
 }
