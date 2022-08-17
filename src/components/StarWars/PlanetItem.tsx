@@ -27,7 +27,7 @@ const PlanetItem: React.FunctionComponent<PlanetItemProps> = ({
             <WrapperItem>
               {Array.isArray(planet[key]) ? (
                 <span style={{ display: "flex", flexDirection: "column" }}>
-                  {(planet[key] as Array<any>)?.map((item: any) => (
+                  {(planet[key] as Array<string | number>)?.map((item) => (
                     <span key={item}>{item}</span>
                   ))}
                 </span>
