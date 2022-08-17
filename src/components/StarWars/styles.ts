@@ -4,11 +4,11 @@ type Screen = {
   desktop: string;
 };
 
-export const screen: Screen = {
-  desktop: "min-width: 955px",
-};
-
 export const desktop: number = 955;
+
+export const screen: Screen = {
+  desktop: `min-width: ${desktop}px`,
+};
 
 const List = styled.ul`
   list-style: none;
@@ -32,7 +32,7 @@ export const FilmItem = styled.li<{ active?: boolean }>`
   display: block;
   margin: 16px;
   background: #fff;
-  border-radius: ${(props) => (props.active ? "4px 4px 0 0" : "4px")};
+  border-radius: ${({ active }) => (active ? "4px 4px 0 0" : "4px")};
   box-shadow: 0px 2px 1px rgba(196, 196, 196, 0.2);
 `;
 
@@ -54,13 +54,12 @@ export const FilmTitle = styled.button`
 
 export const PlanetList = styled(List)<{
   active?: boolean;
+  // :(
   ref?: any;
-  scrollHeight?: any;
-  isResizing?: boolean;
+  scrollHeight?: number | undefined;
 }>`
-  ${(props) => props.isResizing && "transition: none"};
-  max-height: ${(props) => (props.active ? props.scrollHeight + "px" : 0)};
-  ${(props) => props.isResizing && "transition: 0.6s"};
+  max-height: ${({ active, scrollHeight }) =>
+    active ? scrollHeight + "px" : 0};
   overflow: hidden;
   transition: max-height 0.6s;
 
@@ -102,7 +101,7 @@ export const PlanetItem = styled.li`
   }
 `;
 
-export const PlanetHeader = styled.span<{ color?: string }>`
+export const PlanetHeader = styled.span`
   display: flex;
   flex: 1 1;
   width: 0;
@@ -131,7 +130,7 @@ export const HeaderWrapper = styled.p`
   }
 `;
 
-export const WrapperItem = styled.span<{ color?: string; first?: boolean }>`
+export const WrapperItem = styled.span`
   flex: 1 1;
   width: 0;
   padding: 10px 10px;
@@ -142,8 +141,6 @@ export const WrapperItem = styled.span<{ color?: string; first?: boolean }>`
   }
 
   @media screen and (${screen.desktop}) {
-    display: ${(props) => (props.first ? "none" : "flex")};
-
     &:first-child {
       display: none;
     }

@@ -10,7 +10,7 @@ const FilmItem: React.FunctionComponent<{
   title: string;
   planets: Planet[];
 }> = ({ title, planets }) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
+  const [isActive, setIsActive] = useState(false);
 
   const onClickListElement = () => {
     setIsActive(!isActive);

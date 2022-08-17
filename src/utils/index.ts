@@ -1,11 +1,10 @@
 import { ReactNode } from "react";
 
-import { Planet } from "../../types";
-import { PlanetDataObject } from "./PlanetList";
+import { SortDataObject } from "../types";
 
 export const variableNamingToNormal = (name: string) => {
-  let normal: string = "";
-  let first: boolean = true;
+  let normal = "";
+  let first = true;
 
   for (let i = 0; i < name.length; i++) {
     if (first) {
@@ -26,17 +25,17 @@ export const variableNamingToNormal = (name: string) => {
   return normal;
 };
 
-export const getItemsFromKeys = (
+export const getItemsFromKeys = <T>(
   typeName: string,
-  keys: Array<keyof Planet>,
+  keys: Array<keyof T>,
   ignoredKeys: string[],
   nameKey: string,
-  jsx: (key: keyof Planet, keyString: string) => ReactNode
+  jsx: (key: keyof T, keyString: string) => ReactNode
 ) => {
   return keys.map((key) => {
     let keyString = variableNamingToNormal(key.toString());
 
-    if (ignoredKeys.includes(key)) return null;
+    if (ignoredKeys.includes(key as string)) return null;
 
     if (key === nameKey) {
       keyString = typeName + " " + key.charAt(0).toUpperCase() + key.slice(1);
@@ -46,15 +45,18 @@ export const getItemsFromKeys = (
   });
 };
 
-export const sortHandler = (type: keyof Planet, data: PlanetDataObject) => {
+export const sortHandler = <T, K extends keyof T>(
+  type: K,
+  details: SortDataObject<T, K | string>
+) => {
   const CONDITION =
-    data.sortedBy === type &&
-    !!(data.ascending === false || data.ascending === null);
+    details.sortedBy === type &&
+    !!(details.ascending === false || details.ascending === null);
 
-  const sortedData = [...data.planets].sort((a, b) => {
-    if (type === "climates") {
-      const stringA = a?.climates?.join("");
-      const stringB = b?.climates?.join("");
+  const sortedData = [...details.data].sort((a, b) => {
+    if (Array.isArray(type) && typeof type === "string") {
+      const stringA = (a[type] as Array<string>).join("");
+      const stringB = (b[type] as Array<string>).join("");
 
       if (CONDITION) {
         if (stringA > stringB) return -1;
@@ -77,8 +79,8 @@ export const sortHandler = (type: keyof Planet, data: PlanetDataObject) => {
     return 0;
   });
 
-  const dataObject: any = {
-    planets: sortedData,
+  const dataObject: SortDataObject<T, K> = {
+    data: sortedData,
     sortedBy: type,
     ascending: CONDITION,
   };
