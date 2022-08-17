@@ -27,14 +27,14 @@ export const StarWars: React.FunctionComponent = () => {
           padding: "0 10px",
         }}
       />
-      {isFetching ? (
+      {!isFetching ? (
+        <FilmList films={data} />
+      ) : (
         <img
           src={Loader}
           alt="loader"
           style={{ display: "block", margin: "20px auto" }}
         />
-      ) : (
-        <FilmList films={data} />
       )}
       {/* @ts-ignore */}
       {isError && `Error: ${(<span>{error.message}</span>)}`}
