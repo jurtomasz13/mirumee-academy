@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import { Planet } from "../../types";
+import { Planet, SortDataObject } from "../../types";
+import { getItemsFromKeys, sortHandler } from "../../utils";
 import PlanetItem from "./PlanetItem";
 import SortIcon from "./SortIcon";
 import {
@@ -9,33 +10,28 @@ import {
   PlanetList as List,
   Line,
 } from "./styles";
-import { getItemsFromKeys, sortHandler } from "./utils";
-
-export type PlanetDataObject = {
-  planets: Planet[];
-  sortedBy: string;
-  ascending: boolean | null;
-};
 
 const PlanetList: React.FunctionComponent<{
   planets: Planet[];
   active: boolean;
 }> = ({ planets, active }) => {
-  const [data, setData] = useState<PlanetDataObject>({
-    planets,
+  const planetListRef = useRef<HTMLUListElement>();
+
+  const [details, setDetails] = useState<
+    SortDataObject<Planet, keyof Planet | string>
+  >({
+    data: planets,
     sortedBy: "none",
     ascending: null,
   });
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [listHeight, setListHeight] = useState(
+    planetListRef.current?.scrollHeight
+  );
 
   const planetKeys: Array<keyof Planet> = Object.keys(planets[0]) as Array<
     keyof Planet
   >;
-
-  const planetItems = data.planets?.map((planet) => (
-    <PlanetItem key={planet?.id} planetKeys={planetKeys} planet={planet} />
-  ));
 
   const planetHeaders = getItemsFromKeys(
     planets[0].__typename,
@@ -46,35 +42,41 @@ const PlanetList: React.FunctionComponent<{
       <PlanetHeader
         key={key}
         onClick={() => {
-          setData(sortHandler(key, data));
+          setDetails(sortHandler(key, details));
         }}
       >
         {keyName}
         <SortIcon
           sortedBy={key}
-          order={data.sortedBy}
-          ascending={!!data.ascending}
+          order={details.sortedBy}
+          ascending={!!details.ascending}
         />
       </PlanetHeader>
     )
   );
 
-  const childListRef = useRef<HTMLLIElement>();
+  const planetItems = details.data?.map((planet) => (
+    <PlanetItem key={planet?.id} planetKeys={planetKeys} planet={planet} />
+  ));
 
   useEffect(() => {
-    console.log(windowWidth);
-    window.addEventListener("resize", () => {
-      setWindowWidth(window.innerWidth);
-    });
-  }, []);
+    setListHeight(planetListRef.current?.scrollHeight);
+
+    const resizeHandler = () => {
+      if (planetListRef.current?.scrollHeight !== listHeight) {
+        setListHeight(planetListRef.current?.scrollHeight);
+      }
+    };
+
+    window.addEventListener("resize", resizeHandler);
+
+    return () => {
+      window.removeEventListener("resize", resizeHandler);
+    };
+  }, [listHeight]);
 
   return (
-    <List
-      active={active}
-      ref={childListRef}
-      scrollHeight={childListRef.current?.scrollHeight}
-      // isResizing={isResizing}
-    >
+    <List ref={planetListRef} active={active} scrollHeight={listHeight}>
       <PlanetHeaders hidden>{planetHeaders}</PlanetHeaders>
       <Line />
       {planetItems}

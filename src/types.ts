@@ -15,3 +15,9 @@ export type Film = {
   title: string;
   planetConnection: { planets: Planet[] };
 };
+
+export type SortDataObject<T, K extends keyof T | string> = {
+  data: T[];
+  sortedBy: K;
+  ascending: boolean | null;
+};
